@@ -86,7 +86,9 @@ bool init()
 		{
 			//Get window surface
 			gScreenSurface = SDL_GetWindowSurface(gWindow);
-e571864cbc963e146e919633ca258a912181f760turn success;
+		}
+	}
+	return success;
 }
 
 bool loadMedia()
