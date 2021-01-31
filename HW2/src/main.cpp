@@ -119,3 +119,4 @@ void close()
 
 	//Quit SDL subsystems
 	SDL_Quit();
+}
