@@ -2,3 +2,4 @@
 build/
 vscodebin/
 HW3/CMakeLists.txt.user
+*.user
