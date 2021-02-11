@@ -1,0 +1,96 @@
+#include <algorithm>
+#include <cmath>
+
+#include "line_render.hxx"
+
+line_render::line_render(Canvas& buffer_, size_t width, size_t height)
+    : buffer(buffer_)
+    , w(width)
+    , h(height)
+{
+}
+
+void line_render::clear(color c)
+{
+    std::fill(buffer.begin(), buffer.end(), c);
+}
+
+void line_render::set_pixel(position p, color c)
+{
+    buffer.set_pixel(p.x,p.y, c);
+}
+vector_of_pixels line_render::pixels_positions(position start, position end)
+{
+    vector_of_pixels result;
+    std::cout << "Starting point: x=" << start.x << ", y=" << start.y << std::endl;
+    std::cout << "Ending point: x=" << end.x << ", y=" << end.y << std::endl;
+    position curr_pos;
+
+    if (start.x == end.x)
+    {
+        if (start.y > end.y)
+        {
+            int swap_y;
+            swap_y = start.y;
+            start.y = end.y;
+            end.y = swap_y;
+        }
+
+        //draw a vertical line
+        do
+        {
+            result.push_back(start);
+            //std::cout << "x=" << start.x << ", y=" << start.y << std::endl;
+            ++start.y;
+        }while (start.y < end.y);
+
+        return result;
+    }
+    else
+    {
+        // If the end point has a greater X, then swap them
+        if (start.x > end.x)
+        {
+            position swap;
+            swap.x = start.x;
+            swap.y = start.y;
+            start.x = end.x;
+            start.y = end.y;
+            end.x = swap.x;
+            end.y = swap.y;
+        }
+
+        // Using the principle of Bresenham's line algorithm
+        //https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
+        int deltax = abs(end.x - start.x);
+        int deltay = abs(end.y - start.y);
+        int error = 0;
+        int deltaerr = (deltay + 1);
+        int diry = end.y - start.y;
+
+        if (diry > 0) diry = 1;
+        if (diry < 0) diry = -1;
+
+        do
+        {
+           result.push_back(start);
+           error += deltaerr;
+           if (error >= deltaerr)
+           {
+               start.y+=diry;
+               error = error - (deltax + 1);
+           }
+           //std::cout << "x=" << start.x << ", y=" << start.y << std::endl;
+           ++start.x;
+        }while(start.x < end.x);
+    }
+
+    return result;
+}
+
+void line_render::draw_line(position start, position end, color c)
+{
+    vector_of_pixels pxs = pixels_positions(start, end);
+    std::for_each(begin(pxs), std::end(pxs), [&](auto& pos) {set_pixel(pos, c);});
+}
+
