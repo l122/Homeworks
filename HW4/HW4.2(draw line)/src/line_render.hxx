@@ -4,11 +4,8 @@
 
 struct position
 {
-    int32_t x = 0;
-    int32_t y = 0;
-    double length() {return std::sqrt(x*x + y*y);}
-    friend position operator-(const position& left, const position &right);
-    friend bool operator==(const position& left, const position& right);
+    int x = 0;
+    int y = 0;
 };
 
 //Array of all pixels of line

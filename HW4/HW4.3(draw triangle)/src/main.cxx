@@ -1,5 +1,5 @@
-#include "line_render.hxx"
 #include "canvas.hxx"
+#include "triangle_render.hxx"
 
 bool check_file(const Canvas& image, const char* file_name)
 {
@@ -28,6 +28,7 @@ int main (int argc, char * args[])
     const color green = {0, 255, 0};
     const color blue = {0, 0, 255};
     const color black = {0, 0, 0};
+    const color white = {255, 255, 255};
 
     //Declare an image object for output into a file
     Canvas image;
@@ -39,17 +40,63 @@ int main (int argc, char * args[])
     //or
     //line.clear(red);
 
-    //Draw a line
-
+    //Draw lines
     //Declare a position object
-    position point1{50, HEIGHT - 1},
-            point2{WIDTH-1, 0},
-            point3{50,0};
+    position p1{0, HEIGHT - 1},
+            p2{WIDTH-1, 0},
+            p3{0,0},
+            p4{WIDTH-1, HEIGHT-1};
 
 
-    line.draw_line(point1, point2, red);
-    line.draw_line(point2, point3, green);
-    line.draw_line(point3, point1, blue);
+    //Draw a frame around the image
+    line.draw_line(p3, p1, red);
+    line.draw_line(p3, p2, red);
+    line.draw_line(p4, p1, red);
+    line.draw_line(p4, p2, red);
+
+
+    //Draw triangles
+    triangle_render t_render(image, WIDTH, HEIGHT);
+    p1.x=103;
+    p1.y=166;
+    p2.x=297;
+    p2.y=115;
+    p3.x=273;
+    p3.y=175;
+
+    vector_of_pixels vertexes = {p1, p2, p3};
+    //t_render.draw_triangle(vertexes, white);
+
+    //line.draw_line(p1, p3, red);
+   // line.draw_line(p3, p2, green);
+   // line.draw_line(p2, p1, blue);
+
+    color c;
+
+    for (int i = 0; i < 10; ++i)
+    {
+        vertexes.clear();
+        p1.x = rand() % 320;
+        p1.y = rand() % 240;
+        std::cout << "Triangle " << i + 1 << ":" << std::endl;
+        std::cout << "p1: x= " << p1.x << ", y= " << p1.y << std::endl;
+        vertexes.push_back(p1);
+        p2.x = rand() % 320;
+        p2.y = rand() % 240;
+        std::cout << "p2: x= " << p2.x << ", y= " << p2.y << std::endl;
+        vertexes.push_back(p2);
+        p3.x = rand() % 320;
+        p3.y = rand() % 240;
+        std::cout << "p3: x= " << p3.x << ", y= " << p3.y << std::endl;
+        vertexes.push_back(p3);
+
+        c.r = rand() % 256;
+        c.g = rand() % 256;
+        c.b = rand() % 256;
+
+        t_render.draw_triangle(vertexes, c);
+    }
+
 
     //Set output file name
     const char* file_name = "image.ppm";

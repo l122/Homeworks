@@ -9,8 +9,8 @@
 #include <cmath>
 #include <vector>
 
-constexpr size_t WIDTH = 320;
-constexpr size_t HEIGHT = 240;
+constexpr int WIDTH = 320;
+constexpr int HEIGHT = 240;
 
 const size_t buffer_size = WIDTH * HEIGHT;
 

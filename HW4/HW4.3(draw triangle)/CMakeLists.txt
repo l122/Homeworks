@@ -9,7 +9,9 @@ add_executable(draw_triangle src/main.cxx
                      src/canvas.hxx
                      src/canvas.cxx
                      src/line_render.hxx
-                     src/line_render.cxx)
+                     src/line_render.cxx
+                     src/triangle_render.cxx
+                     src/triangle_render.hxx)
 
 # COMPILE FEATURES
 target_compile_features(draw_triangle PUBLIC cxx_std_17)
