@@ -49,10 +49,10 @@ void line_render::set_pixel(position p, color c)
 vector_of_pixels line_render::pixels_positions(position start, position end)
 {
     vector_of_pixels result;
-    std::cout << "Starting point: x=" << start.x << ", y=" << start.y << std::endl;
-    std::cout << "Ending point: x=" << end.x << ", y=" << end.y << std::endl;
     position s, e, swap;
     int flag = 0;
+   // std::cout << "Starting point: x=" << start.x << ", y=" << start.y << std::endl;
+   // std::cout << "Ending point: x=" << end.x << ", y=" << end.y << std::endl;
 
     if (!(check_bound(start) && check_bound(end)))
     {
@@ -102,12 +102,14 @@ vector_of_pixels line_render::pixels_positions(position start, position end)
         flag = 1;
     }
 
+
     // Using the principle of Bresenham's line algorithm
     //https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
     int deltax = abs(e.x - s.x);
     int deltay = abs(e.y - s.y);
     int error = 0;
-    int deltaerr = (deltay + 1);
+    //int deltaerr = (deltay + 1);
+    int deltaerr = deltay;
     int diry = e.y - s.y;
 
     if (diry > 0) diry = 1;
@@ -120,17 +122,25 @@ vector_of_pixels line_render::pixels_positions(position start, position end)
             swap.x = s.y;
             swap.y = s.x;
             result.push_back(swap);
+            //std::cout << "swap.x=" << swap.x << ", swap.y=" << swap.y << std::endl;
        }
-       else result.push_back(s);
+       else
+       {
+           result.push_back(s);
+           //std::cout << "x=" << s.x << ", y=" << s.y << std::endl;
+       }
        error += deltaerr;
        if (error >= deltaerr)
        {
            s.y+=diry;
-           error = error - (deltax + 1);
+           //error = error - (deltax + 1);
+           error = error - deltax;
        }
-       std::cout << "x=" << s.x << ", y=" << s.y << std::endl;
        ++s.x;
-    }while(s.x < e.x);
+    }while(s.x <= e.x);
+
+  //  std::cout << "Starting point: x=" << start.x << ", y=" << start.y << std::endl;
+  // std::cout << "Ending point: x=" << end.x << ", y=" << end.y << std::endl;
 
     return result;
 }
